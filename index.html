@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Blackjack Score</title>
+
+    <script src="BlackjackCard.js"></script>
+    <script>
+        var card1Input, card2Input, scoreForm, scoreOutput;
+
+        function init() {
+            card1Input = document.querySelector('#card1');
+            card2Input = document.querySelector('#card2');
+            scoreForm = document.querySelector('#scoreForm');
+            scoreOutput = document.querySelector('#score');
+
+            card1Input.addEventListener('input', resetFields);
+            card2Input.addEventListener('input', resetFields);
+
+            scoreForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                resetFields();
+
+                try {
+                    var card1 = new BlackjackCard(card1Input.value);
+                } catch(error) {
+                    // Catch error creating BlackjackCard
+                    card1Input.setCustomValidity(error.message);
+                    card1Input.reportValidity();
+                    return false;
+                }
+                try {
+                    var card2 = new BlackjackCard(card2Input.value);
+                } catch(error) {
+                    // Catch error creating BlackjackCard
+                    card2Input.setCustomValidity(error.message);
+                    card2Input.reportValidity();
+                    return false;
+                }
+
+                // Prevent cards having the same input
+                if (card1Input.value.toUpperCase() === card2Input.value.toUpperCase()) {
+                    card2Input.setCustomValidity('Can\'t be the same as Card 1');
+                    card2Input.reportValidity();
+                    return false;
+                }
+
+                var card1Value = card1.getValue(), // Gets card value, assumes all aces === 11
+                    card2Value = card2.getValue(),
+                    score = card1Value + card2Value;
+
+                // Since we're only comparing two cards, if we score over 21 we know it was two aces,
+                // One of the aces should be a low ace (value === 1)
+                if (score > 21) {
+                    score -= 10;
+                }
+
+                scoreOutput.innerHTML = score;
+            });
+        }
+
+        function resetFields() {
+            scoreOutput.innerHTML = '';
+            card1Input.setCustomValidity('');
+            card2Input.setCustomValidity('');
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <h1>Blackjack Score</h1>
+    <p>Cards take the form (VALUE)(SUIT) (without parens) and should be distinct</p>
+    <ul>
+        <li>VALUE is 2-10, J (jack), Q (queen), K (king) or A (ace)
+        <li>SUIT is C (clubs), D (diamonds), H (hearts) or S (spades)
+    </ul>
+    <p>Examples: 2C, 10H, AS, JD</p>
+    <form id="scoreForm">
+        <p>
+            <label for="card1">Card 1</label>
+            <input type="text" id="card1" minlength="2" maxlength="3" required="true">
+        </p>
+        <p>
+            <label for="card2">Card 2</label>
+            <input type="text" id="card2" minlength="2" maxlength="3" required="true">
+        </p>
+        <p>
+            <button type="submit" id="submit">Calculate Score</button>
+        </p>
+    </form>
+    <p id="error"></p>
+    <p>
+        Blackjack Score:
+        <span id="score"></span>
+    </p>
+</body>
+</html>
