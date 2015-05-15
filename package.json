@@ -1,0 +1,28 @@
+{
+  "name": "BlackjackScore",
+  "version": "1.0.0",
+  "description": "Calculate Blackjack score of two input cards",
+  "author": "Ben Booth <bkbooth@gmail.com>",
+  "private": true,
+  "scripts": {
+    "test": "mocha",
+    "start": "node score"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bkbooth/BlackjackScore.git"
+  },
+  "keywords": [
+    "Blackjack",
+    "score"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bkbooth/BlackjackScore/issues"
+  },
+  "homepage": "https://github.com/bkbooth/BlackjackScore",
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "mocha": "^2.2.5"
+  }
+}
